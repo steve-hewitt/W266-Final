@@ -308,7 +308,7 @@ def train(args):
         lr_scheduler_type='constant',
         # misc args
         seed=42,
-        save_total_limit=1,  # limit the total amount of checkpoints
+        save_total_limit=10,  # limit the total amount of checkpoints
         disable_tqdm=False,
         metric_for_best_model="eval_loss",
         load_best_model_at_end=True,
@@ -480,7 +480,7 @@ if __name__ == '__main__':
     #                help="Model checkpoint")
     #p.add_argument('-time', '--timestamp', type=str, default='2021-02-14-04-57-04',
     #                help="Model checkpoint")
-    p.add_argument('-c', '--ckpt', type=str, default="240",
+    p.add_argument('-c', '--ckpt', type=str, default="30000",
                     help="Model checkpoint")
     p.add_argument('-time', '--timestamp', type=str, default='2022-07-10-18-08-18',
                     help="Model checkpoint")
