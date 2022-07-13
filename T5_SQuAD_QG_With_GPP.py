@@ -613,7 +613,7 @@ def beam_generate_sentences(batch,
         attention_mask=features['attention_mask'],
         num_beams=args.beam_size,
         max_length=args.max_generation_length,
-        num_return_sequences=1,
+        num_return_sequences=args.num_return_sequences,
     )
     # Use model tokenizer to decode to text.
     generated_sentences = [
