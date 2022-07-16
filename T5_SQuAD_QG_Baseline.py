@@ -140,14 +140,15 @@ def prepare_eval(output_list):
     return ref_list, pred_list
 
 # Replacing dataset constructing function from utilities with a custom one.
-def parse_data(t_split='train'):
+def parse_data(t_split='train', args=None):
   # Get dataset.
   #squad_dataset = load_dataset('squad') # Method A - standard version
   #squad_dataset, info = tfds.load('squad_question_generation/split_zhou', with_info=True, split='train') # Method B - version with split that could be better.
 
   # Split handling - validation set further split into 50% dev/test.
   if t_split == 'train':
-    df = pd.DataFrame(load_dataset('squad')['train'])
+    t_df = pd.DataFrame(load_dataset('squad')['train'])
+    df = t_df.sample(frac=args.trim_train_pct,random_state=266)                                                 
   elif t_split in ['val','test']:
     vt_df = pd.DataFrame(load_dataset('squad')['validation'])
     df_val = vt_df.sample(frac=0.5,random_state=266)
@@ -266,8 +267,8 @@ def train(args):
     # Load the dataset
     #trn_df = parse_data(in_file=f'../../data/{args.dataset}/trn.tsv')
     #val_df = parse_data(in_file=f'../../data/{args.dataset}/val.tsv')
-    trn_df = parse_data('train')
-    val_df = parse_data('val')
+    trn_df = parse_data('train',args)
+    val_df = parse_data('val',args)
 
     # Load the pre-trained model
     ckpt_path = None
@@ -308,7 +309,7 @@ def train(args):
         lr_scheduler_type='constant',
         # misc args
         seed=42,
-        save_total_limit=10,  # limit the total amount of checkpoints
+        save_total_limit=2,  # limit the total amount of checkpoints
         disable_tqdm=False,
         metric_for_best_model="eval_loss",
         load_best_model_at_end=True,
@@ -390,7 +391,7 @@ def sample_sentences(batch,
 
 
 def test(args):
-    te_df = parse_data('test')
+    te_df = parse_data('test',args)
     print('Data loaded!!!')
 
     # Load the model
@@ -484,10 +485,10 @@ if __name__ == '__main__':
                     help="Model checkpoint")
     p.add_argument('-time', '--timestamp', type=str, default='2022-07-10-18-08-18',
                     help="Model checkpoint")
-    p.add_argument('-f', '--flag', type=str, default='gpvae',
+    p.add_argument('-f', '--flag', type=str, default='t5baseline',
                     help="Model checkpoint")
-    p.add_argument('-d', '--dataset', type=str, default="GYAFC/em",
-                    help="specify the dataset: GYAFC/em, GYAFC/fr")
+    p.add_argument('-d', '--dataset', type=str, default="SQuAD",
+                    help="specify the dataset: GYAFC/em, GYAFC/fr, SQuAD")
     p.add_argument('--model_name', type=str, default="t5-base",
                     help="specify the model name: t5-base, facebook/blenderbot-400M-distill")
     p.add_argument('-v', '--kernel_v', type=float, default=64.0,
@@ -510,12 +511,10 @@ if __name__ == '__main__':
     p.add_argument('--beam_size', type=int, default=5)
     #p.add_argument('--num_return_sequences', type=int, default=10)
     p.add_argument('--num_return_sequences', type=int, default=5)
+    p.add_argument('--trim_train_pct', type=float, default=1.0)
     p.add_argument('--local_rank', type=int, default=-1,
                     help="Multiple GPU training")
     args = p.parse_args()
-
-    # jupyter fix for bad flag
-    args.flag = 'gpvae'
 
     if args.task == 'train':
         args.timestamp = time.strftime("%Y-%m-%d-%H-%M-%S", time.localtime())
