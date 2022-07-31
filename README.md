@@ -1,11 +1,11 @@
-Natural Language Processing with Deep Learning (W266)<br>
 UC Berkeley School of Information<br>
+Natural Language Processing with Deep Learning (W266)<br>
 Final Project<br>
 By Steven Hewitt and Intae Kim<br>
 
 The codebase in this repository corresponds to our paper exploring novel decoding strategies on the topic of machine question generation.
 
-# Repo Contents
+### Repo Contents
     ├── Load_and_Examine.ipynb              <- Notebook to load trained Baseline T5 model and experiment with predictions.
     ├── Load_and_Examine_GPP.ipynb          <- Notebook to load trained GPP T5 model and experiment with predictions.
     ├── Model Evaluation.ipynb              <- Notebook to grade model predictions with BLEU, ROUGE-L, and METEOR scores.
