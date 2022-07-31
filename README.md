@@ -1,4 +1,4 @@
-#Natural Language Processing with Deep Learning (W266)
+# Natural Language Processing with Deep Learning (W266)
 UC Berkeley School of Information 
 Final Project
 By Steven Hewitt and Intae Kim
