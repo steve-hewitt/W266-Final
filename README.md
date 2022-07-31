@@ -1,5 +1,7 @@
-# W266 - Natural Language Processing with Deep Learning - Final Project
-Steven Hewitt and Intae Kim
+# UC Berkeley School of Information 
+# Natural Language Processing with Deep Learning (W266)
+# Final Project
+By Steven Hewitt and Intae Kim
 
 The codebase in this repository corresponds to our paper exploring novel decoding strategies on the topic of machine question generation.
 
